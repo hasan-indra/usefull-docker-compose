@@ -1,0 +1,18 @@
+version: '3.9'
+services:
+  redis:
+    image: "redis:alpine"
+    container_name: redis
+    ports:
+      - "6379:6379"  
+  redis-sentinel:
+    image: "bitnami/redis-sentinel:latest"
+    container_name: redis-sentinel
+    depends_on:
+      - redis
+    environment:
+      - REDIS_MASTER_SET=mymaster
+      - REDIS_MASTER_HOST=127.0.0.1
+      - REDIS_SENTINEL_DOWN_AFTER_MILLISECONDS=10000
+    ports:
+      - "26379:26379"
